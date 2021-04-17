@@ -1,0 +1,26 @@
+create the form for category in my case i create a form where in category you can upload name,image of the category
+then create model and migration for category where name,image, and slug will be created all are the strings
+
+
+now create sub category and its child category view, model and migration
+
+in sub categories we will create foreignkey(cat_id) name and slug laravel 8 has better method for foreign key constraint instead of old one
+
+$table->foreignId('cat_id')->constrained('categories')->onUpdate('cascade') ->onDelete('cascade');
+name and slug
+
+in ->constrained() we will write parent table name ->constrained('categories ') model name 
+
+
+in child categories we will create sub caterioes foriegn key ,name and slug 
+
+$table->foreignId('sub_cat_id')->constrained('sub_categories')->onUpdate('cascade') ->onDelete('cascade');
+name and slug
+
+
+
+
+
+
+      
+     
