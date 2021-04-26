@@ -1,4 +1,4 @@
-<?php 
+ <?php 
 // first i created controller model and migration for brand
 php artisan make:model --migration --controller  Brand   --resource
 
@@ -130,7 +130,50 @@ value="{{ isset($brands) ? $brands->brand_name_hin : '' }}"
             
             
 
+//now to update data here we had image so inacse of image update data all data in if block if it does not had any image then update all data
+from else block 
+  public function update(Request $request, Brand $Brand)
+    {
+         //here validate the data
+        $request->validate([
+            'english' => 'required',
+            'hindi' => 'required',
+          
+        ],[
+            //here send custom message
+            'english.required' => 'Input Brand English Name',
+            'hindi.required' => 'Input Brand Hindi Name',
+        ]);
 
+
+        if ($request->file('image')) {
+        
+$image = $request->file('image');
+        $name_gen = hexdec(uniqid()).'.'.$image->getClientOriginalExtension();
+        Image::make($image)->resize(300,300)->save('brand/'.$name_gen);
+        $save_url = 'brand/'.$name_gen;
+
+
+  $Brand->brand_name_en=$request->english;
+         $Brand->brand_name_hin=$request->hindi;
+          $Brand->brand_image=$save_url;
+
+          $Brand->save();
+          return redirect()->back();
+    }
+
+else{
+
+       // this is to store data  in case of no image updated there is no need of insert image
+         $Brand->brand_name_en=$request->english;
+         $Brand->brand_name_hin=$request->hindi;
+         
+
+          $Brand->save();
+          return redirect()->back();
+
+          }
+    }
 
 
 ?>
