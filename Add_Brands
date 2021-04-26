@@ -36,8 +36,31 @@ php artisan make:model --migration --controller  Brand   --resource
     
     //in brand create.blade.php we will send to store the data
     
-    //here we will just add brand name english and hindi slug will added only in store function
-        <form action="{{route('Brands.store')}}" method="post" enctype="multipart/form-data">@csrf
+  // here in brand i made a single view for both create and edit here is some code important note in edit function both will be model name
+  //like   public function edit(Brand $Brand) same like update 
+  
+ <form action= "{{ isset($brands) ? route('Brands.update',$brands->id) : route('Brands.store') }}" method="post" enctype="multipart/form-data"> 
+
+             @csrf
+              @if(isset($brands))
+        @method('PUT')
+      @endif
+      
+  // for add edit button 
+  {{ isset($brands) ? 'Edit' : 'Add' }}
+  
+  
+  
+  // and to display values
+value="{{ isset($brands) ? $brands->brand_name_hin : '' }}"
+      
+      
+     // and edit function will be
+      public function edit(Brand $Brand)
+    {
+        return view("brand.create")->with('brands', $Brand);
+    }
+        
         
         
         //then go to brand contoller store function
@@ -106,6 +129,7 @@ php artisan make:model --migration --controller  Brand   --resource
  	<i class="fa fa-trash"></i></a>
             
             
+
 
 
 
