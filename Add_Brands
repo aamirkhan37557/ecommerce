@@ -1,0 +1,90 @@
+<?php 
+// first i created controller model and migration for brand
+php artisan make:model --migration --controller  Brand   --resource
+
+
+//then i added the data in the brands migration
+            $table->string('brand_name_en');
+            $table->string('brand_name_hin');
+            $table->string('brand_slug_en');
+            $table->string('brand_slug_hin');
+            $table->string('brand_image'); 
+            
+            
+            
+//then i made the Brand model fillable with this fields
+  protected $fillable = [
+'brand_name_en','brand_name_hin', 'brand_slug_en',  'brand_slug_hin','brand_image',
+     
+    ];
+    
+    
+    //then i added it to the database
+    php artisan migrate
+    
+    
+    //then i created a route for it 
+    Route::resource('Brands','BrandController');
+    
+    //then i pass it to the add brands
+    href="{{route('Brands.create')}}"
+    
+    
+    //then i display the brand create form from the brand controller
+      return view('brand.create');
+      
+    
+    //in brand create.blade.php we will send to store the data
+    
+    //here we will just add brand name english and hindi slug will added only in store function
+        <form action="{{route('Brands.store')}}" method="post" enctype="multipart/form-data">@csrf
+        
+        
+        //then go to brand contoller store function
+          public function store(Request $request)
+    {
+        
+        //here validate the data
+        $request->validate([
+            'english' => 'required',
+            'hindi' => 'required',
+            'image' => 'required',
+        ],[
+            //here send custom message
+            'english.required' => 'Input Brand English Name',
+            'hindi.required' => 'Input Brand Hindi Name',
+        ]);
+
+//here get the image and intervent it i had used image intervetion package
+        $image = $request->file('image');
+        $name_gen = hexdec(uniqid()).'.'.$image->getClientOriginalExtension();
+
+        //cretae the brand folder for it 
+        Image::make($image)->resize(300,300)->save('brand/'.$name_gen);
+        $save_url = 'brand/'.$name_gen;
+
+
+//here inser data
+    Brand::create([
+        'brand_name_en' => $request->english,
+        'brand_name_hin' => $request->hindi,
+        'brand_slug_en' => strtolower(str_replace(' ', '-',$request->english)),
+        'brand_slug_hin' => str_replace(' ', '-',$request->hindi),
+        'brand_image' => $save_url,
+
+        ]);
+
+        $notification = array(
+            'message' => 'Brand Inserted Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->back()->with($notification);
+    }
+
+
+
+
+
+
+?>
