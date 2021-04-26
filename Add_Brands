@@ -84,6 +84,28 @@ php artisan make:model --migration --controller  Brand   --resource
 
 
 
+//now display the data 
+   <li><a href="{{route('Brands.index')}}">View Brands</a></li>
+   
+   
+   //now go to the brand controller index function
+    return view('brand.index')->with('brands',Brand::all());
+    
+    
+    //and then display it 
+    //for image
+    <img src="{{ asset($item->brand_image) }}" style="width: 70px; height: 40px;"> 
+    
+    
+    // for edit 
+     <a href="{{ route('brand.edit',$item->id) }}" class="btn btn-info" title="Edit Data"><i class="fa fa-pencil"></i> </a>
+     
+     
+     //for delete
+ <a href="{{ route('brand.delete',$item->id) }}" class="btn btn-danger" title="Delete Data" id="delete">
+ 	<i class="fa fa-trash"></i></a>
+            
+            
 
 
 
