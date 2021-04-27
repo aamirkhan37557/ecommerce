@@ -1,0 +1,177 @@
+note i am using same page for create and edit so that why we will use route name same like model name  
+
+
+
+
+
+// create controller model and migraton for it 
+php artisan make:model --migration --controller  Sub_Category   --resource
+
+
+//create a migration for it as we know we will need foreign key means primary foerign ey convention and cascade on update and delete
+for that laravel 8 intrduced new featured 
+
+//primary foreignkey constrained in case of table different name convention of model we can use table name in contrained in ''
+  $table->foreignId('Category_id')->constrained()
+             ->onUpdate('cascade')->onDelete('cascade');
+             
+             $table->string('subcategory_name_en');
+            $table->string('subcategory_name_hin');
+            $table->string('subcategory_slug_en');
+            $table->string('subcategory_slug_hin');
+            
+   //go cmd 
+   php artisan migrate
+   
+   
+   //inmodel make it fillabe
+       protected $fillable = [
+'subcategory_name_en','subcategory_name_hin', 'subcategory_slug_en',  'subcategory_slug_hin','Category_id ',
+    ];
+            
+            
+            
+//now create a route for it 
+
+Route::resource('SubCategory','SubCategoryController');
+
+
+// create link to create sub categories and view sub categories
+<a href="{{route('SubCategory.create')}}">Create SubCategory</a>
+
+
+
+//now go to its controller create function for it  and for edit function 
+
+//create function  to categroy from category table
+ return view('SubCategory.create')->with('Category',Category::all());
+
+//edit function  here in passing parameter both will model name exact model name in same case
+ public function edit(Sub_Category $Sub_Category)
+    {
+       return view('SubCategory.create')->with('Subcategory',$Sub_Category);
+    }
+
+  
+ //now in  create view 
+<form action="{{isset($Subcategory) ? route('SubCategory.update',$Subcategory->id) :route('SubCategory.store') }}"
+method="post" enctype="multipart/form-data"> 
+             @csrf
+              @if(isset($Subcategory))
+        @method('PUT')
+      @endif
+      
+ //now to display foreign key mean category or parent table 
+     <select class="form-control form-control-lg" name="category_id">
+                                 <option selected="">Open this select Category</option>
+                                 @foreach($Category as $c)
+
+ <option value="{{$c->id }}">{{$c->category_name_en}} | {{$c->category_name_hin}}</option>
+
+                                 @endforeach
+                               
+                              </select>
+                              
+//for values
+ value="{{ isset($Subcategory) ? $Subcategory->subcategory_name_hin : '' }}
+
+//for button
+{{ isset($Subcategory) ? 'Edit' : 'Add' }}
+
+
+
+//now to store a record
+  //here validate the data
+        $request->validate([
+            'english' => 'required',
+            'hindi' => 'required',
+         'category_id'=>'required',
+        ],[
+            //here send custom message
+            'english.required' => 'Input Category English Name',
+            'hindi.required' => 'Input Category Hindi Name',
+        ]);
+
+
+
+//here inser data through eloquent
+    Sub_Category::create([
+        'Category_id'=>  $request->category_id,
+        'subcategory_name_en' => $request->english,
+        'subcategory_name_hin' => $request->hindi,
+        'subcategory_slug_en' => strtolower(str_replace(' ', '-',$request->english)),
+        'subcategory_slug_hin' => str_replace(' ', '-',$request->hindi),
+
+        ]);
+
+        $notification = array(
+            'message' => 'Brand Inserted Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->back()->with($notification);
+        ----------------------------------------------
+
+
+
+
+//now go to index view to create edit and delete
+
+and display data as you like
+
+//edit 
+<a href="{{ route('SubCategory.edit',$item->id) }}" class="btn btn-danger" title="Delete Data" id="delete">
+  <i class="fa fa-pencil"></i></a>
+
+
+//delete
+<form action="{{route('SubCategory.destroy',$item->id)}}" method="post">
+  @csrf
+  @method('DELETE')
+   <span class="table-remove">
+                                    <button type="submit" class="btn btn-danger"> 
+  <i class="fa fa-trash"></i></button></span>
+</form>
+
+
+//now go to update function
+
+//here validate the data
+        $request->validate([
+            'english' => 'required',
+            'hindi' => 'required',
+         'category_id'=>'required',
+        ],[
+            //here send custom message
+            'english.required' => 'Input Category English Name',
+            'hindi.required' => 'Input Category Hindi Name',
+        ]);
+
+       
+     
+     $Sub_Category->Category_id=  $request->category_id;
+        $Sub_Category->subcategory_name_en = $request->english;
+        $Sub_Category->subcategory_name_hin = $request->hindi;
+
+        $Sub_Category->save();
+             return redirect()->back();
+             
+             
+             //now go to delete function 
+             
+                public function destroy(Sub_Category $Sub_Category)
+    {
+       $Sub_Category->delete();
+         return redirect()->back();
+
+    }
+                              
+                              
+ 
+  
+  
+  
+  
+  
+  
+  
