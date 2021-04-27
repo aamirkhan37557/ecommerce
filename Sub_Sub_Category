@@ -41,3 +41,39 @@ php artisan make:model --migration --controller  Subsubcat   --resource
     }
     
     
+    
+    //store function 
+    $request->validate([
+            'category_id' => 'required',
+            'subcategory_id' => 'required',
+            'subsubcategory_name_en' => 'required',
+            'subsubcategory_name_hin' => 'required',
+        ],[
+            'category_id.required' => 'Please select Any option',
+            'subsubcategory_name_en.required' => 'Input SubSubCategory English Name',
+        ]);
+
+         
+
+       Subsubcat::create([
+        'Category_id' => $request->category_id,
+        'Sub_Category_id' => $request->subcategory_id,
+        'subsubcategory_name_en' => $request->subsubcategory_name_en,
+        'subsubcategory_name_hin' => $request->subsubcategory_name_hin,
+        'subsubcategory_slug_en' => strtolower(str_replace(' ', '-',$request->subsubcategory_name_en)),
+        'subsubcategory_slug_hin' => str_replace(' ', '-',$request->subsubcategory_name_hin),
+         
+
+        ]);
+
+        $notification = array(
+            'message' => 'Sub-SubCategory Inserted Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->back()->with($notification);
+        
+        
+        //view and then update here is update function 
+    
+    
