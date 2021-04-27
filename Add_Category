@@ -1,0 +1,73 @@
+//create model migration a controller for category
+php artisan make:model --migration --controller  Category   --resource
+
+
+//now create migration for it 
+            $table->string('category_name_en');
+            $table->string('category_name_hin');
+            $table->string('category_slug_en');
+            $table->string('category_slug_hin');
+            $table->string('image'); 
+
+
+//go to cmd and run it 
+php artisan migrate
+
+
+//now in model make these fields fillable
+   
+     protected $fillable = [
+'category_name_en','category_name_hin', 'category_slug_en',  'category_slug_hin','image',
+    ];
+
+
+
+//create route to view category
+Route::resource('Categories','CategoryController');
+
+
+//now create a hyperlink in sidebar to create it it 
+<a href="{{route('Categories.create')}}">create</a>
+
+
+//category controller
+  return view('categories.create');
+  
+  
+  
+  //in category view use signle form for edit and create first change the edit and update and delete parameter as model name for both modelname 
+  $samemodel in same case
+  
+  
+  //form change the route name must
+      <form action= "{{ isset($Category) ? route('Categories.update',$Category->id) : route('Categories.store') }}" method="post" enctype="multipart/form-data"> 
+
+             @csrf
+              @if(isset($Category))
+        @method('PUT')
+      @endif
+      
+      
+      
+//for values
+ value="{{ isset($Category) ? $Category->category_name_en : '' }}"
+ 
+ 
+ //for image in display
+                       @if(isset($Category))
+        <img src="{{ asset($Category->image) }}" style="width: 70px; height: 40px;" name="old_image">
+      @endif
+      
+
+//for button
+  {{ isset($Category) ? 'Edit' : 'Add' }}
+  
+  
+  
+  
+  // now we will store data in category controller in store function using image intervention
+  
+      
+      
+      
+      
