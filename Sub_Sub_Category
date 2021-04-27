@@ -1,0 +1,30 @@
+//create controller model and migraton
+php artisan make:model --migration --controller  Subsubcat   --resource
+
+
+// create migration for it 
+ $table->foreignId('Category_id')->constrained()
+             ->onUpdate('cascade')->onDelete('cascade');
+             
+             //here double under so thats why we would table name in it 
+ $table->foreignId('Sub_Category_id')->constrained('sub__categories')
+             ->onUpdate('cascade')->onDelete('cascade');
+       
+            $table->string('subsubcategory_name_en');
+            $table->string('subsubcategory_name_hin');
+            $table->string('subsubcategory_slug_en');
+            $table->string('subsubcategory_slug_hin'); 
+            
+            
+//create model fillable for it 
+  protected $fillable = [
+'Category_id ','Sub_Category_id ', 'subsubcategory_name_en', 
+ 'subsubcategory_name_hin','subsubcategory_slug_en','subsubcategory_slug_hin',
+    ];
+            
+   
+   //route for it 
+   Route::resource('Subsubcat','SubsubcatController');
+   
+   
+   //now create link for it 
