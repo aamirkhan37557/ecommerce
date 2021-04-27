@@ -28,3 +28,16 @@ php artisan make:model --migration --controller  Subsubcat   --resource
    
    
    //now create link for it 
+   href="{{route('Sub_Category.create')}}"
+   
+   //create view for it and controller function to get catogories and sub catogories 
+        return view('Child.create')->with('catogories',Category::all())->with('child',Sub_Category::all());
+        
+        
+        //edit function
+         public function edit(Subsubcat $Subsubcat)
+    {
+         return view('Child.create')->with('Subsubcat',$Subsubcat)->with('catogories',Category::all())->with('child',Sub_Category::all());
+    }
+    
+    
