@@ -1,4 +1,8 @@
- <?php 
+ <?php
+ note iam using the same view for create and edit so the route name should be model name and in controller as paramter both routes should be
+ same model name
+ 
+ 
 // first i created controller model and migration for brand
 php artisan make:model --migration --controller  Brand   --resource
 
