@@ -181,4 +181,14 @@ else{
     }
 
 
+
+
+// now to delete record wh had already created a form link to delete a record in view 
+  public function destroy(Brand $Brand)
+    {
+       $Brand->delete();
+       return redirect()->back();
+
+    }
+
 ?>
