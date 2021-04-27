@@ -1,3 +1,9 @@
+
+note iam using the same view for create and edit so the route name should be model name and in controller as paramter both routes should be
+ same model name
+ 
+ 
+ 
 //create model migration a controller for category
 php artisan make:model --migration --controller  Category   --resource
 
