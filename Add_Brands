@@ -124,10 +124,15 @@ value="{{ isset($brands) ? $brands->brand_name_hin : '' }}"
      <a href="{{ route('brand.edit',$item->id) }}" class="btn btn-info" title="Edit Data"><i class="fa fa-pencil"></i> </a>
      
      
-     //for delete
- <a href="{{ route('brand.delete',$item->id) }}" class="btn btn-danger" title="Delete Data" id="delete">
- 	<i class="fa fa-trash"></i></a>
-            
+     //for delete use form because resource controller doesnot delete with hyperlink i think that does not work
+<form action="{{route('Brands.destroy',$item->id)}}" method="post">
+  @csrf
+  @method('DELETE')
+   <span class="table-remove">
+                                    <button type="submit" class="btn btn-danger"> 
+  <i class="fa fa-trash"></i></button></span>
+</form>
+
             
 
 //now to update data here we had image so inacse of image update data all data in if block if it does not had any image then update all data
