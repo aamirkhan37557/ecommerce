@@ -39,6 +39,17 @@ Route::resource('Categories','CategoryController');
   $samemodel in same case
   
   
+  //edit function of category controller
+    public function edit(Category $Category)
+    {
+       return view('categories.create')->with('Category', $Category);
+    }
+  
+  
+  
+  
+  
+  
   //form change the route name must
       <form action= "{{ isset($Category) ? route('Categories.update',$Category->id) : route('Categories.store') }}" method="post" enctype="multipart/form-data"> 
 
@@ -66,6 +77,83 @@ Route::resource('Categories','CategoryController');
   
   
   // now we will store data in category controller in store function using image intervention
+  
+       //here validate the data
+        $request->validate([
+            'english' => 'required',
+            'hindi' => 'required',
+            'image' => 'required',
+        ],[
+            //here send custom message
+            'english.required' => 'Input Category English Name',
+            'hindi.required' => 'Input Category Hindi Name',
+        ]);
+
+//here get the image and intervent it i had used image intervetion package
+        $image = $request->file('image');
+        $name_gen = hexdec(uniqid()).'.'.$image->getClientOriginalExtension();
+
+        //cretae the brand folder for it 
+        Image::make($image)->resize(300,300)->save('category/'.$name_gen);
+        $save_url = 'category/'.$name_gen;
+
+
+//here inser data through eloquent
+    Category::create([
+        'category_name_en' => $request->english,
+        'category_name_hin' => $request->hindi,
+        'category_slug_en' => strtolower(str_replace(' ', '-',$request->english)),
+        'category_slug_hin' => str_replace(' ', '-',$request->hindi),
+        'image' => $save_url,
+
+        ]);
+
+        $notification = array(
+            'message' => 'Brand Inserted Successfully',
+            'alert-type' => 'success'
+        );
+
+        return redirect()->back()->with($notification);
+        
+        
+        
+        
+        //now we will display the data create route for it i had already
+        
+        //in controller
+       return view('categories.index')->with('Categories',Category::all());
+        
+        
+        //now create the view and show data and add edit and delete button in it
+        
+        //edit
+        <a href="{{ route('Categories.edit',$item->id) }}" class="btn btn-danger" title="Delete Data" id="delete">
+  <i class="fa fa-pencil"></i></a>
+  
+  
+  //fro delete use form
+  
+<form action="{{route('Categories.destroy',$item->id)}}" method="post">
+  @csrf
+  @method('DELETE')
+   <span class="table-remove">
+                                    <button type="submit" class="btn btn-danger"> 
+  <i class="fa fa-trash"></i></button></span>
+</form>
+
+
+
+//now go to delete function and delete data 
+  public function destroy(Category $Category)
+    {
+        $Category->delete();
+       return redirect()->back();
+    }
+  
+        
+        
+        
+        
   
       
       
