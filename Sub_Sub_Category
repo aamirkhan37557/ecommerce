@@ -117,6 +117,26 @@ belongsto (modelname to whom it belongs,foreign key of subsub category table,pri
            // / here the category['sub_category'] is function name and ['subcategory_name_en'] is field name
            
            
+           //now we will edit it for it had scenario
+           1.display all the sub category fields using route model biniding
+           
+           2. display all the categories in from category table in desired area
+           2.display all the sub catoegroiess from sub categories table in desired area
+           
+           3. now we will display selected for that in option we will use if condition as
+           we are displaying categories option is like    <option value="{{$c->id}}">{{$c->subcategory_name_en}} </option>
+           
+           now we use condition 
+           if $c->id which is category table id(parent tableid)  == to the foreign key of subcategory id ? 'display seletec' : ' '
+           orginal code 
+           
+            <option value="{{$c->id}}"     {{  $c->id == $Subsubcat->Category_id ? 'selected':''  }}   >
+            {{$c->category_name_en}} 
+            </option>
+            
+            same for all others
+           
+           
            
            
            
