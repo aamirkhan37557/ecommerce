@@ -74,6 +74,52 @@ php artisan make:model --migration --controller  Subsubcat   --resource
         return redirect()->back()->with($notification);
         
         
-        //view and then update here is update function 
+        //view the data 
+//now we had the scenario we will display the category name and sub category through sub sub category name 
+for that we had crerated the primary and foreign key contstraint and each and every child sub category belongs to sub category and category
+in subcategory model 
+
+//here every sub sub categroy belongs to sub category for that 
+
+public function modelname in small letter 
+inside is belongs  subcategorymodelname,what is the foreign key of sub category in sub sub category table,
+on which key is is related prmary key of subcategory table
+
+ public function sub_category(){
+      return $this->belongsTo(Sub_Category::class,'Sub_Category_id' ,'id');
+      }
+
+
+
+now each  sub sub category  belongs to category for thats
+public function in small letter model name
+belongsto (modelname to whom it belongs,foreign key of subsub category table,primary key of category table)  
+
+       public function category(){
+      return $this->belongsTo(Category::class,'Category_id','id');
+      }
+      
+      //now we will display it
+       public function index()
+    {
+       return view('Child.index')->with('childsub',Subsubcat::all());
+    }
+    
+    in the view we had all sub category there is an array for category and sub category 
+          @foreach($childsub as $item)
+          
+           @endforeach
+           {{ $item->subsubcategory_name_en }}// this is sub subs category column name name 
+           //for category
+           {{ $item['category']['category_name_en'] }}// here the category['category'] is function name and ['category_name_en'] is field name
+           //sub category 
+           {{ $item['sub_category']['subcategory_name_en'] }}
+           // / here the category['sub_category'] is function name and ['subcategory_name_en'] is field name
+           
+           
+           
+           
+           
+           
     
     
