@@ -48,3 +48,22 @@
 // create the .blade.php to create or add product
 
 
+// now display the product based on select for tham go to dependent dropdwon using vuejs in this folder 
+
+// there use form which will for both create and edit  as we had same name for model and resource route thats why 
+
+ <form action= "{{ isset($Products) ? route('Products.update',$Products->id) : route('Products.store') }}" method="post" enctype="multipart/form-data"> 
+
+             @csrf
+              @if(isset($Products))
+        @method('PUT')
+      @endif
+      
+      //for values
+       value="{{ isset($Products) ? $Products->subsubcategory_name_hin : '' }}"
+       //for button
+        {{ isset($Products) ? 'Edit' : 'Add' }} 
+        
+        //
+
+
