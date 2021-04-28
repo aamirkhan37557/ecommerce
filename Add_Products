@@ -1,0 +1,50 @@
+// as we will use same name so route name will be route name to stay safe from error route model binding :)
+
+//create model controller and migration for product note in constrained add the table name 
+---------------------------------start of migration------------------------------------
+             $table->integer('brand_id');
+              $table->foreignId('category_id')->constrained('categories')
+             ->onUpdate('cascade')->onDelete('cascade');
+              $table->foreignId('sub_category_id')->constrained('sub__categories')
+             ->onUpdate('cascade')->onDelete('cascade');
+              $table->foreignId('Subsubcat_id')->constrained('subsubcats')
+             ->onUpdate('cascade')->onDelete('cascade');
+             $table->string('product_name_en');
+            $table->string('product_name_hin');
+            $table->string('product_slug_en');
+            $table->string('product_slug_hin');
+            $table->string('product_code');
+            $table->string('product_qty');
+            $table->string('product_tags_en');
+            $table->string('product_tags_hin');
+            $table->string('product_size_en')->nullable();
+            $table->string('product_size_hin')->nullable();
+            $table->string('product_color_en');
+            $table->string('product_color_hin');
+            $table->string('selling_price');
+            $table->string('discount_price')->nullable();
+            $table->string('short_descp_en');
+            $table->string('short_descp_hin');
+            $table->string('long_descp_en');
+            $table->string('long_descp_hin');
+            $table->string('product_thambnail');
+            $table->integer('hot_deals')->nullable();
+            $table->integer('featured')->nullable();
+            $table->integer('special_offer')->nullable();
+            $table->integer('special_deals')->nullable();
+            $table->integer('status')->default(0);
+            
+--------------end of product migration-------------------------------------------------------------------------------------------  
+
+//run php artisan migrate
+
+//make the mode protected fillable our protected guarded
+
+//create the  resource route having same name as model name for route model biniding free error
+
+//create the link to add/create  and view/display  products in menu 
+
+//now go to the controller create function and there redirect to the view which you want to create for add products
+// create the .blade.php to create or add product
+
+
