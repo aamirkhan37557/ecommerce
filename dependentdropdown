@@ -4,50 +4,70 @@ here we will work on three depended select box
 
 // create all the constrained for them 
 
-//after create constraint primary foreign key create route for them so i had done crud on all of them so i create
-3 different routes for them 
+//after create constraint primary foreign key
+//create route for them to display data first create routes for category  
 
-Route::resource('Categories','CategoryController');
+Route::get('getCategories','CategoryController@getcat');
 
-Route::resource('Sub_Category','SubCategoryController');
+//and category controller will be 
+                public function getcat()
+                  {
+                     $getcat=Category::all();
 
-Route::resource('Subsubcat','SubsubcatController');
+                      return response()->json($getcat);
+                  }
+                  
+                  
+     //now first we will get all the data of controller in console for that we will create a function to get all categories and call
+     that function in mounted function to all all the category on page load in vue components
+     //this is mounted
+      mounted() {
+            console.log('Component mounted.');
+            this.getcategory();
+        },
+     
+     
+     //this  is methods 
+        methods:{
 
-//now i will create api mean i will get json data of all these
+          getcategory(){
+    axios.get('getCategories').then(
+             (response) => {  console.log(response.data);})
+
+        .then(
+        (errors) => {console.log(errors)}) 
+}//end of get catogory function
 
 
+        } //end of method
+        
+        
+        
+        //now we will dislay the data in the select category box for that
+        //first we will create the array  in data return function as empty array 
+        
+           data(){
+            return{
+     catogory:[],
+         
+            }
+        },
+        
+        //now we will store data in it 
+               getcategory(){
+    axios.get('getCategories').then(
+             (response) => { 
+
+         this.catogory = response.data;
+           })
+
+        .then(
+        (errors) => {console.log(errors)}) 
+}//end of get catogory function
 
 
-
-//controller for sub category id inside its controller
-//we pass model name for model route binding because we want to find it according to id
-
-  public function show(Sub_Category $Sub_Category)
-    {
-        return Response()->json($Sub_Category);
-    }
+// now we will loop in it 
+ <option v-for='data in catogory' :value='data.id'>{{data.category_name_en}}</option>
 
 
-
-//controller for sub sub category id inside its controller
-//we pass model name for model route binding because we want to find it according to id 
-   public function show(Subsubcat $Subsubcat)
-    {
-        return Response()->json($Subsubcat);
-    }
-    
-   //now check in route either its working according to id exsist in database or not
-   
-   //now switch to vue js copy and paster all the code of all selected box which we want to be depended in vuejs components and check it 
-   
-             //now first we will display the categories for it  add this 
-             
-              <select  name="category" v-model='category' @change='getsubcategory()'>  
-              
-              //as we pass we model so in data return make this    category:0, in return 
-              
-              //now pass this function to mounted to load automatically  this.getcategory(),
-              
-              //now create the function to get the data from the controller using axios
-              
-
+        
