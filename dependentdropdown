@@ -1,0 +1,53 @@
+here we will work on three depended select box 
+
+//install vue js and run npm watch
+
+// create all the constrained for them 
+
+//after create constraint primary foreign key create route for them so i had done crud on all of them so i create
+3 different routes for them 
+
+Route::resource('Categories','CategoryController');
+
+Route::resource('Sub_Category','SubCategoryController');
+
+Route::resource('Subsubcat','SubsubcatController');
+
+//now i will create api mean i will get json data of all these
+
+
+
+
+
+//controller for sub category id inside its controller
+//we pass model name for model route binding because we want to find it according to id
+
+  public function show(Sub_Category $Sub_Category)
+    {
+        return Response()->json($Sub_Category);
+    }
+
+
+
+//controller for sub sub category id inside its controller
+//we pass model name for model route binding because we want to find it according to id 
+   public function show(Subsubcat $Subsubcat)
+    {
+        return Response()->json($Subsubcat);
+    }
+    
+   //now check in route either its working according to id exsist in database or not
+   
+   //now switch to vue js copy and paster all the code of all selected box which we want to be depended in vuejs components and check it 
+   
+             //now first we will display the categories for it  add this 
+             
+              <select  name="category" v-model='category' @change='getsubcategory()'>  
+              
+              //as we pass we model so in data return make this    category:0, in return 
+              
+              //now pass this function to mounted to load automatically  this.getcategory(),
+              
+              //now create the function to get the data from the controller using axios
+              
+
