@@ -1,0 +1,74 @@
+// create controller migration and model for it 
+php artisan make:model --migration --controller   Cupon  --resource
+
+//now create migration for it 
+           $table->string('coupon_name');
+            $table->integer('coupon_discount');
+            $table->string('coupon_validity');
+            $table->integer('status')->default(1);
+            
+//now migrate it 
+php artissan migrate
+
+//make the model fillable or protected
+
+
+//now create a rourse controller for it 
+Route::resource('Cupon','CuponController');
+
+//now create links for it to create and view it
+
+cupon controller to 
+
+//create
+  public function create()
+    {
+       return view('cupon.create');
+    }
+    
+    // in creating the user should not be able to select the perviuos date 
+    min="{{ Carbon\Carbon::now()->format('Y-m-d') }}"
+     <input type="date" name="coupon_validity" class="form-control" min="{{ Carbon\Carbon::now()->format('Y-m-d') }}">
+    
+    
+    
+    //view 
+       public function index()
+    {
+        return view('cupon.index')->with('cupon',Cupon::all());
+    }
+    
+    // in the view we will do several things to check either cupon is activated or not  on the bases of current date 
+    
+      @if($item->status == 1)
+		 	<span class="badge badge-pill badge-success"> Active </span>
+		 	@if($item->coupon_validity >= Carbon\Carbon::now()->format('Y-m-d'))
+		 	<span class="badge badge-pill badge-success"> Valid </span>
+		 	@else
+           <span class="badge badge-pill badge-danger"> InActive </span>
+           <span class="badge badge-pill badge-danger"> Invalid </span>
+		 	@endif
+      
+      
+      //
+
+
+//edit
+    public function edit(Cupon $Cupon)
+    {
+        return view('cupon.create')->with('Cupon',$Cupon);
+    }
+
+
+now in create cupon.blade.php form
+          <form action= "{{ isset($Cupon) ? route('Cupon.update',$Cupon->id) :  route('Cupon.store') }}" method="post" enctype="multipart/form-data"> 
+
+             @csrf
+              @if(isset($Cupon))
+        @method('PUT')
+      @endif
+      
+      //values
+       value="{{ isset($Cupon) ? $Cupon->coupon_discount : '' }}" 
+      
+
