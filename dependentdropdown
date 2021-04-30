@@ -32,7 +32,9 @@ Route::get('getCategories','CategoryController@getcat');
 
           getcategory(){
     axios.get('getCategories').then(
-             (response) => {  console.log(response.data);})
+             (response) => {  
+                    this.catogory = response.data;
+             console.log(response.data);})
 
         .then(
         (errors) => {console.log(errors)}) 
@@ -68,6 +70,52 @@ Route::get('getCategories','CategoryController@getcat');
 
 // now we will loop in it 
  <option v-for='data in catogory' :value='data.id'>{{data.category_name_en}}</option>
+ 
+ 
+ // now we will display data in sub categroy 
+ 
+ // first we will create a rotue for it as wwe will display data according to sepfic category seleted we will pass parameter in the function
+ but here in route we will not pass any parameters 
+ Route::get('getsubcat','SubCategoryController@getsub');
+ 
+ //now wwe will use @ change and v model in the category select note in category select not in sub category select
+ //beacuse here we will display data on base of category change 
+ 
+ //it category select not sub category select
+  <select name="category"   v-model="subcat" @change="getsubcategory()">
+  
+  //now we will create function here params is uset to pass parameter to the controller
+  
+ 
+  {   params: {    subcat : this.subcat }   }
+
+   getsubcategory(){
+    axios.get('getsubcat',{
+                 params: {
+                   subcat : this.subcat 
+                 }
+              } ).then(
+             (response) => { 
+this.subcat =response.data;
+       console.log(response.data);
+     })
+
+        .then(
+        (errors) => {console.log(errors)}) 
+},//end of get  sub catogory function
+
+
+now create a controllerfor it 
+   public function getsub(Request $request ){
+$sub = Sub_Category::where('Category_id', $request->subcat)->get();
+return response()->json($sub);
+
+    }
+    
+    // same for other dependend boxes 
+
+ 
+ 
 
 
         
