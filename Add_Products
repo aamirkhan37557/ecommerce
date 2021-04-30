@@ -67,5 +67,76 @@
         //for dependent drop down go to the dependentdropvue in ecommerce github
         
         //now we will store the value 
+        
+        // here we had a situation we will insert data into multiple table it is product table and product id s foreign key for that we will need product id
+        for that purpose we will use modelname::insertGetId and assig it into variable to get this table id
+        
+        
+        //   inserting products table data start ------------------------------------------------------------------------------------
+        
+         $image = $request->file('tHUNMNAIL');
+        $name_gen = hexdec(uniqid()).'.'.$image->getClientOriginalExtension();
+        Image::make($image)->resize(917,1000)->save('thambnail/'.$name_gen);
+        $save_url = 'thambnail/'.$name_gen;
+
+      $product_id = Products::insertGetId([
+        'brand_id' => $request->brand,
+        'category_id' => $request->category_id,
+        'sub_category_id' => $request->sub_id,
+        'Subsubcat_id' => $request->subsub_id,
+        'product_name_en' => $request->peng,
+        'product_name_hin' => $request->phindi,
+        'product_slug_en' =>  strtolower(str_replace(' ', '-', $request->peng)),
+        'product_slug_hin' => str_replace(' ', '-', $request->phindi),
+        'product_code' => $request->code,
+
+        'product_qty' => $request->quantity,
+        'product_tags_en' => $request->tagse,
+        'product_tags_hin' => $request->tagsh,
+        'product_size_en' => $request->tagsse,
+        'product_size_hin' => $request->tagssh,
+        'product_color_en' => $request->tagsce,
+        'product_color_hin' => $request->tagsch,
+
+        'selling_price' => $request->price,
+        'discount_price' => $request->discount,
+        'short_descp_en' => $request->seng,
+        'short_descp_hin' => $request->shini,
+        'long_descp_en' => $request->leng,
+        'long_descp_hin' => $request->lhindi,
+
+        'hot_deals' => $request->hot,
+        'featured' => $request->feature,
+        'special_offer' => $request->Specialsoffer,
+        'special_deals' => $request->sepealdeals,
+
+        'product_thambnail' => $save_url,
+        'status' => 1,
+        'created_at' => Carbon::now(),   
+
+      ]);
+      
+      // now we will insert data inmultiple table using same controller as we had multiple table for that we will loop thorugh it and will use this data 
+        //now as we are inserting multiple image from antoher table so for that 
+      $images = $request->file('multiple');
+      foreach ($images as $img) {
+        //here we loop through it and insert all the data 
+        $make_name = hexdec(uniqid()).'.'.$img->getClientOriginalExtension();
+        Image::make($img)->resize(917,1000)->save('multiple/'.$make_name);
+        $uploadPath = 'multiple/'.$make_name;
+
+            mulitiple::create([
+
+            'products_id' => $product_id,
+            'photo_name' => $uploadPath,
+            'created_at' => Carbon::now(), 
+
+        ]);
+
+      //
+    }
+        
+        
+          //   inserting products table data end ------------------------------------------------------------------------------------
 
 
