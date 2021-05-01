@@ -97,6 +97,28 @@ this.carts =response.data.carts;
           
           v-for="data in carts"
           {{data.name}}
+          
+          <p >{{total}} </p>
+          
+          
+          //too remove
+           public function RemoveMiniCart($rowId){
+        Cart::remove($rowId);
+        return response()->json(['success' => 'Product Remove from Cart']);
+
+    } // end mehtod 
+    
+    <button type="submit"  @click="miniCartRemove(data.rowId)">remove</button>
+    
+    //vuefubtion
+      miniCartRemove(rowId){
+         axios.get('remove/'+rowId).then( response =>{
+    
+ response.data;
+ console.log(response.data);
+
+         }).catch()
+        }
 
 
 
