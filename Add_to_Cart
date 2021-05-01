@@ -1,0 +1,104 @@
+//frisr dispaly all the product through vue js
+and install bumbummen99/shoppingcart
+
+on add to cart button 
+
+@click.prevent='addcart(data.id)'
+
+now we need the data of that  spefic product in cart  which is cliked 
+whihc will be uniquely identfied by its specfic id so we need to pass the of that specfic product
+
+Route::get('addtocart/{id}','ProductsController@addcart');
+
+//controller
+display the data according to id and we will use addcart bulid option to add data to the cart 
+i.e Cart::add(['id' => '293ad', 'name' => 'Product 1', 'qty' => 1, 'price' => 9.99, 'weight' => 550, 'options' => ['size' => 'large']]);
+use Gloudemans\Shoppingcart\Facades\Cart;
+but we had a situation if we had discount then should use discount price of the product and if not then orginal price oof the product
+
+ public function addcart(Request $request , $id)
+    {
+       $p = Products::find($id);
+       // as we had found all the data so we can now find out the discount price of the tabel also 
+       if($p->discount_price == Null){
+        dd($request->pname);
+    Cart::add([
+                'id' => $id, 
+                'name' => $p->product_name_en, 
+                'qty' => 1, 
+                'price' => $p->selling_price,
+                'weight' => 1, 
+                'options' => [
+                    'image' => $p->product_thambnail,
+                    'color' => $red,
+                    'size' => 1,
+                ],
+            ]);
+
+return response()->json(['product added to cart succssfully']);
+       }
+       else{
+
+Cart::add(['id' => $p->id, 'name' => $p->product_name_en, 'qty' => 1, 'price' => $p->discount_price, 'weight' => 550, 'options' => ['size' => 'large']]);
+return response()->json(['product added to cart succssfully']);
+       } 
+    }// end of the function
+
+
+
+//now read or display the product in the cart we will read all the data from cart so route
+
+//route
+Route::get('minicart','ProductsController@AddMiniCart');
+
+//controller
+  public function AddMiniCart(){
+//to get the content f cart
+        $carts = Cart::content();
+   //to count the cart item 
+        $cartQty = Cart::count();
+        //to total the caaaart itme 
+        $cartTotal = Cart::total();
+
+        return response()->json([
+            'carts' => $carts,
+            'cartQty' => $cartQty,
+            'cartTotal' => round($cartTotal),
+
+        ]);
+    } // end method 
+    
+    
+    // create a cart buuto or deisgn 
+    @click.prevent="showcartitem()"
+    
+      return{
+      carts:[],
+  count:0,
+  total:0,
+            }
+
+
+
+showcartitem(){
+  axios.get('minicart').then(response => {
+this.carts =response.data.carts;
+  this.count =response.data.cartQty;
+  this.total =response.data.cartTotal; 
+
+  }).catch()
+}
+
+
+
+
+// to cart is not empty 
+          <span class="badge badge-pill badge-dark badge-up count-mail" v-if="count !=0 ">{{count}}</span>
+          
+          v-for="data in carts"
+          {{data.name}}
+
+
+
+
+
